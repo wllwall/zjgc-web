@@ -245,4 +245,6 @@ $(function () {
       $('.nav_main a').removeClass('hover')
     }
   )
+
+  // 暂无新闻滑动组件（仅数据填充，不改样式）
 })

@@ -307,7 +307,8 @@
 		"wildcard": "^2.0.0",
 		"wrappy": "^1.0.2",
 		"ws": "^8.11.0",
-		"yallist": "^4.0.0"
+		"yallist": "^4.0.0",
+		"yarn": "^1.22.22"
 	},
 	"repository": {
 		"type": "git",
