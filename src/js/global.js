@@ -1,3 +1,6 @@
+import heroImg1 from '../images/block/img01.webp'
+import heroImg2 from '../images/block/img02.webp'
+import heroImg3 from '../images/block/img03.jpg'
 import ico1 from '../images/nav_child/ico_1.png'
 import ico2 from '../images/nav_child/ico_2.png'
 import ico3 from '../images/nav_child/ico_3.png'
@@ -176,8 +179,12 @@ $(function () {
   $('.slide-group').slick({
     accessibility: false,
     autoplay: true,
-    autoplaySpeed: 50000,
-    arrows: false
+    autoplaySpeed: 6000,
+    speed: 650,
+    infinite: true,
+    arrows: false,
+    pauseOnHover: false,
+    pauseOnFocus: false
   })
 
   $('.slide-dots .slide-next').click(function () {
@@ -198,6 +205,71 @@ $(function () {
   $('.slide-dot').click(function () {
     const index = $('.slide-dot').index(this)
     $('.slide-group').slick('slickGoTo', index)
+  })
+
+  const headlineSlides = [
+    {
+      href: '#',
+      img: heroImg1,
+      title: '稻盛商学院举行兼职教授、实务导师聘任仪式',
+      desc: '2025年10月15日，浙江工商大学稻盛商学院在山西太原第十七届稻盛经营学企业践行报告会上，举行了兼职教授、实务导师聘任仪式，由浙江工商大学稻盛商学院院长李军宣读聘任文件并颁发聘书。'
+    },
+    {
+      href: '#',
+      img: heroImg2,
+      title: '稻盛商学院举办师生交流会',
+      desc: '围绕人才培养与课程建设，学院组织师生交流研讨，进一步凝聚共识，推动教学科研与社会服务协同发展。'
+    },
+    {
+      href: '#',
+      img: heroImg3,
+      title: '稻盛商学院举行“东方管理”讲座',
+      desc: '聚焦“东方管理与企业家精神”主题，邀请校内外专家学者分享前沿观点与实践经验，促进学术交流与思想碰撞。'
+    }
+  ]
+
+  function setHeadline(index) {
+    const safeIndex =
+      typeof index === 'number' && index >= 0 && index < headlineSlides.length
+        ? index
+        : 0
+    const data = headlineSlides[safeIndex]
+    const $hero = $('.section01 .main .hero')
+    if (!$hero.length) return
+
+    $hero.attr('href', data.href || '#')
+    $hero
+      .find('.pic img')
+      .attr('src', data.img)
+      .attr('alt', data.title || '')
+    $hero.find('.hero_title').text(data.title || '')
+    $hero.find('.hero_desc').text(data.desc || '')
+
+    const $dots = $hero.find('.hero_controls .dot')
+    if ($dots.length) {
+      $dots.eq(safeIndex).addClass('active').siblings().removeClass('active')
+    }
+  }
+
+  let headlineIndex = 0
+  setHeadline(headlineIndex)
+
+  let headlineTimer = window.setInterval(() => {
+    headlineIndex = (headlineIndex + 1) % headlineSlides.length
+    setHeadline(headlineIndex)
+  }, 7000)
+
+  $('.section01 .main .hero_controls .dot').on('click', function () {
+    const index = $(this).index()
+    headlineIndex = index
+    setHeadline(headlineIndex)
+    if (headlineTimer) {
+      window.clearInterval(headlineTimer)
+    }
+    headlineTimer = window.setInterval(() => {
+      headlineIndex = (headlineIndex + 1) % headlineSlides.length
+      setHeadline(headlineIndex)
+    }, 7000)
   })
 
   let sto_nav
@@ -245,6 +317,4 @@ $(function () {
       $('.nav_main a').removeClass('hover')
     }
   )
-
-  // 暂无新闻滑动组件（仅数据填充，不改样式）
 })
