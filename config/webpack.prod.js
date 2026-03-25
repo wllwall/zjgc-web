@@ -1,5 +1,6 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
   //入口 entry
@@ -19,11 +20,11 @@ module.exports = {
       {
         // 处理css/less文件
         test: /\.css$/i,
-        use: ['style-loader', 'css-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader']
       },
       {
         test: /\.less$/i,
-        use: ['style-loader', 'css-loader', 'less-loader']
+        use: [MiniCssExtractPlugin.loader, 'css-loader', 'less-loader']
       },
       {
         // 处理图片资源
@@ -55,7 +56,11 @@ module.exports = {
   //插件 plugin
   plugins: [
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../public/index.html')
+      template: path.resolve(__dirname, '../public/index.html'),
+      scriptLoading: 'defer'
+    }),
+    new MiniCssExtractPlugin({
+      filename: 'static/[name].[contenthash:8].css'
     })
   ],
 
